@@ -10,18 +10,18 @@ function createMenus() {
   const ui = SpreadsheetApp.getUi()
 
   const consumerUnits = ui
-    .createMenu("Consumer Units")
-    .addItem("Update", "updateConsumerUnits")
+    .createMenu('Consumer Units')
+    .addItem('Update', 'updateConsumerUnits')
 
   const liveBatchData = ui
-    .createMenu("Live Batches")
-    .addItem("Update", "updateLiveBatches")
+    .createMenu('Live Batches')
+    .addItem('Update', 'updateLiveBatches')
 
   const weeklySchedule = ui
-    .createMenu("Weekly Schedule")
-    .addItem("Refresh", "makeWeeklySchedule")
+    .createMenu('Weekly Schedule')
+    .addItem('Refresh', 'makeWeeklySchedule')
 
-  ui.createMenu("Statics")
+  ui.createMenu('Statics')
     .addSubMenu(consumerUnits)
     .addSubMenu(liveBatchData)
     .addSubMenu(weeklySchedule)
@@ -35,7 +35,7 @@ function createMenus() {
  * @param {event} e Event passed in by the trigger
  */
 function updateLiveBatchProgress(e) {
-  const liveBatches = spreadsheet.getSheetByName("Live Batches")
+  const liveBatches = spreadsheet.getSheetByName('Live Batches')
   const liveBatchHeaders = liveBatches
     .getRange(1, 1, 1, liveBatches.getLastColumn())
     .getValues()[0]
@@ -43,7 +43,7 @@ function updateLiveBatchProgress(e) {
   const range = e.range
   const sheet = range.getSheet()
 
-  if (sheet.getName() === "Weekly") {
+  if (sheet.getName() === 'Weekly') {
     const row = range.getRow()
     const col = range.getColumn()
     const val = range.getValue()
@@ -56,7 +56,7 @@ function updateLiveBatchProgress(e) {
 
       liveBatches.getRange(targetRow, targetCol).setValue(val)
 
-      if (field === "Packed" && val === "yes") {
+      if (field === 'Packed' && val === 'yes') {
         const completedBatch = new CompletedBatch(
           ...liveBatches.getRange(targetRow, 1, 1, 4).getValues()
         )
@@ -74,11 +74,11 @@ function updateLiveBatchProgress(e) {
  * @param {event} e Event passed in by the trigger
  */
 function updateDeansProgress(e) {
-  const liveBatches = spreadsheet.getSheetByName("Live Batches")
+  const liveBatches = spreadsheet.getSheetByName('Live Batches')
   const range = e.range
   const sheet = range.getSheet()
 
-  if (sheet.getName() === "Weekly") {
+  if (sheet.getName() === 'Weekly') {
     const row = range.getRow()
     const col = range.getColumn()
     const val = range.getValue()
@@ -106,28 +106,28 @@ function updateDeansProgress(e) {
     const deansBatchRow = deansSheet.createTextFinder(batch).findNext().getRow()
     const deansBatchColumn = headerMap[field]
 
-    if (field === "Launched") {
+    if (field === 'Launched') {
       deansSheet
         .getRange(deansBatchRow, deansBatchColumn)
-        .setValue(val === "yes" ? "x" : "")
+        .setValue(val === 'yes' ? 'x' : '')
       return
     }
 
-    if (field === "Packed") {
+    if (field === 'Packed') {
       deansSheet
         .getRange(deansBatchRow, 12)
-        .setValue(val === "yes" ? new Date() : "")
+        .setValue(val === 'yes' ? new Date() : '')
     }
 
-    if (field === "Cut") {
+    if (field === 'Cut') {
       deansSheet
         .getRange(deansBatchRow, 7)
-        .setValue(val === "yes" ? true : false)
+        .setValue(val === 'yes' ? true : false)
     }
 
     deansSheet
       .getRange(deansBatchRow, deansBatchColumn)
-      .setValue(val === "yes" ? true : false)
+      .setValue(val === 'yes' ? true : false)
   }
 }
 
@@ -140,12 +140,12 @@ function startTextHighlighting(e) {
   const range = e.range
   const sheet = range.getSheet()
 
-  if (sheet.getName() === "Weekly") {
+  if (sheet.getName() === 'Weekly') {
     const col = range.getColumn()
     const row = range.getRow()
     const val = range.getValue()
 
-    if (row >= 7 && col >= 3 && col <= 15 && val !== "") {
+    if (row >= 7 && col >= 3 && col <= 15 && val !== '') {
       sheet
         .getRange(7, 3, sheet.getLastRow() - 6, sheet.getLastColumn() - 3)
         .setBackground(null)
@@ -154,9 +154,9 @@ function startTextHighlighting(e) {
 
       sheet
         .getRange(row, 3, 1, 6)
-        .setBackground("#674EA7")
-        .setFontWeight("bold")
-        .setFontColor("white")
+        .setBackground('#674EA7')
+        .setFontWeight('bold')
+        .setFontColor('white')
     }
   }
 }

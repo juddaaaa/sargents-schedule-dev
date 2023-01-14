@@ -16,12 +16,12 @@ class Batch {
   getFormattedDates() {
     const timestampSuffix = Batch.getSuffix(this.timestamp.getDate())
     const timestamp2Suffix =
-      "timestamp2" in this ? Batch.getSuffix(this.timestamp2.getDate()) : null
+      'timestamp2' in this ? Batch.getSuffix(this.timestamp2.getDate()) : null
 
     if (!timestamp2Suffix) {
       return Utilities.formatDate(
         this.timestamp,
-        "GMT",
+        'GMT',
         `EEEE d'${timestampSuffix}' MMMM yyyy`
       )
     }
@@ -29,12 +29,12 @@ class Batch {
     return [
       Utilities.formatDate(
         this.timestamp,
-        "GMT",
+        'GMT',
         `   EEEE d'${timestampSuffix}' MMMM yyyy`
       ),
       Utilities.formatDate(
         this.timestamp2,
-        "GMT",
+        'GMT',
         `   EEEE d'${timestamp2Suffix}' MMMM yyyy`
       ),
     ]
@@ -50,10 +50,10 @@ class Batch {
   getLine() {
     const start = this.batch.substring(0, 2)
 
-    return start.includes("R")
-      ? "Line 3"
-      : start.includes("H")
-      ? "Line 7"
+    return start.includes('R')
+      ? 'Line 3'
+      : start.includes('H')
+      ? 'Line 7'
       : null
   }
 
@@ -70,15 +70,15 @@ class Batch {
       case 1:
       case 21:
       case 31:
-        return "st"
+        return 'st'
       case 2:
       case 22:
-        return "nd"
+        return 'nd'
       case 3:
       case 23:
-        return "rd"
+        return 'rd'
       default:
-        return "th"
+        return 'th'
     }
   }
 
@@ -89,7 +89,7 @@ class Batch {
    * @memberof Batch
    */
   getWeekNumber() {
-    return Utilities.formatDate(this.timestamp, "GMT", "w")
+    return Utilities.formatDate(this.timestamp, 'GMT', 'w')
   }
 
   /**
@@ -109,12 +109,12 @@ class Batch {
    * @returns {boolean} true | false
    */
   isValid() {
-    if (typeof this.batch !== "string") return false
-    if (typeof this.group !== "string") return false
-    if (typeof this.description !== "string") return false
-    if (typeof this.qty !== "number") return false
+    if (typeof this.batch !== 'string') return false
+    if (typeof this.group !== 'string') return false
+    if (typeof this.description !== 'string') return false
+    if (typeof this.qty !== 'number') return false
     if (!this.timestamp instanceof Date) return false
-    
+
     return true
   }
 

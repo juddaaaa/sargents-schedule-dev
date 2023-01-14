@@ -9,7 +9,7 @@ class CompletedBatch extends Batch {
    * @memberof CompletedBatch
    */
   append() {
-    const sheet = spreadsheet.getSheetByName("Completed Batches")
+    const sheet = spreadsheet.getSheetByName('Completed Batches')
 
     if (!this.exists()) {
       sheet.appendRow([
@@ -33,7 +33,7 @@ class CompletedBatch extends Batch {
    * @memberof CompletedBatch
    */
   exists() {
-    const sheet = spreadsheet.getSheetByName("Completed Batches")
+    const sheet = spreadsheet.getSheetByName('Completed Batches')
 
     if (sheet.createTextFinder(this.batch).findNext()) return true
 
@@ -69,7 +69,7 @@ class CompletedBatch extends Batch {
    * @memberof CompletedBatch
    */
   update() {
-    const sheet = spreadsheet.getSheetByName("Completed Batches")
+    const sheet = spreadsheet.getSheetByName('Completed Batches')
     const row = sheet.createTextFinder(this.batch).findNext().getRow()
     const batch = this.push([])
 

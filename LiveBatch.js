@@ -1,19 +1,19 @@
 class LiveBatch extends Batch {
   constructor(array) {
     super(array)
-    this.launched = ["x", "yes"].includes(array[5]) ? "yes" : "no"
-    this.received = [true, "yes"].includes(array[6]) ? "yes" : "no"
-    this.cut = [true, "yes"].includes(array[7]) ? "yes" : "no"
-    this.built = [true, "yes"].includes(array[8]) ? "yes" : "no"
-    this.terminated = [true, "yes"].includes(array[9]) ? "yes" : "no"
-    this.tested = [true, "yes"].includes(array[10]) ? "yes" : "no"
+    this.launched = ['x', 'yes'].includes(array[5]) ? 'yes' : 'no'
+    this.received = [true, 'yes'].includes(array[6]) ? 'yes' : 'no'
+    this.cut = [true, 'yes'].includes(array[7]) ? 'yes' : 'no'
+    this.built = [true, 'yes'].includes(array[8]) ? 'yes' : 'no'
+    this.terminated = [true, 'yes'].includes(array[9]) ? 'yes' : 'no'
+    this.tested = [true, 'yes'].includes(array[10]) ? 'yes' : 'no'
     this.packed = array[11]
-      ? [true, "yes"].includes(array[11])
-        ? "yes"
-        : "no"
-      : [true, "yes"].includes(array[10])
-      ? "yes"
-      : "no"
+      ? [true, 'yes'].includes(array[11])
+        ? 'yes'
+        : 'no'
+      : [true, 'yes'].includes(array[10])
+      ? 'yes'
+      : 'no'
   }
 
   /**
@@ -22,7 +22,7 @@ class LiveBatch extends Batch {
    * @memberof LiveBatch
    */
   append() {
-    const sheet = spreadsheet.getSheetByName("Live Batches")
+    const sheet = spreadsheet.getSheetByName('Live Batches')
 
     if (!this.exists()) {
       sheet.appendRow([
@@ -54,8 +54,8 @@ class LiveBatch extends Batch {
    */
   exists() {
     const sheets = [
-      spreadsheet.getSheetByName("Live Batches"),
-      spreadsheet.getSheetByName("Completed Batches"),
+      spreadsheet.getSheetByName('Live Batches'),
+      spreadsheet.getSheetByName('Completed Batches'),
     ]
 
     for (let sheet of sheets) {
@@ -101,7 +101,7 @@ class LiveBatch extends Batch {
    * @memberof LiveBatch
    */
   update() {
-    const sheet = spreadsheet.getSheetByName("Live Batches")
+    const sheet = spreadsheet.getSheetByName('Live Batches')
     const row = sheet.createTextFinder(this.batch).findNext().getRow()
 
     sheet.getRange(row, sheet.getLastColumn()).setValue(this.timestamp)

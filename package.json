@@ -12,8 +12,7 @@
   "dependencies": {
     "@types/google-apps-script": "^1.0.56"
   },
-  "prettier": {
-    
-    "semi": false
+  "devDependencies": {
+    "prettier": "2.8.3"
   }
 }

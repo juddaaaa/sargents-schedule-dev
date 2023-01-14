@@ -4,16 +4,16 @@
  */
 function addNewLiveBatches() {
   const startTime = new Date()
-  const liveBatches = spreadsheet.getSheetByName("Live Batches")
+  const liveBatches = spreadsheet.getSheetByName('Live Batches')
   const liveBatchData = liveBatches.getDataRange().getValues().slice(1)
-  const completedBatches = spreadsheet.getSheetByName("Completed Batches")
+  const completedBatches = spreadsheet.getSheetByName('Completed Batches')
   const completedBatchData = completedBatches
     .getDataRange()
     .getValues()
     .slice(1)
 
   const checkBatches = [...liveBatchData, ...completedBatchData]
-    .map((batch) => batch[0])
+    .map(batch => batch[0])
     .sort()
 
   const { liveBatches: allOrders } = getAllOrders()
@@ -46,7 +46,7 @@ function addNewLiveBatches() {
 
   spreadsheet.toast(
     `Added ${newBatches.length} batch(es) in ${totalTime.toFixed(2)} seconds.`,
-    "Add New Batches",
+    'Add New Batches',
     10
   )
 }
@@ -57,33 +57,33 @@ function addNewLiveBatches() {
  */
 function backupImportantData() {
   const liveBatches = spreadsheet
-    .getSheetByName("Live Batches")
+    .getSheetByName('Live Batches')
     .getDataRange()
     .getValues()
 
   const completedBatches = spreadsheet
-    .getSheetByName("Completed Batches")
+    .getSheetByName('Completed Batches')
     .getDataRange()
     .getValues()
 
   const consumerUnits = spreadsheet
-    .getSheetByName("Consumer Units")
+    .getSheetByName('Consumer Units')
     .getDataRange()
     .getValues()
 
   const backupObject = {
-    "Live Batches": liveBatches,
-    "Completed Batches": completedBatches,
-    "Consumer Units": consumerUnits,
+    'Live Batches': liveBatches,
+    'Completed Batches': completedBatches,
+    'Consumer Units': consumerUnits,
   }
 
-  const backups = DriveApp.getFilesByName("Backup.json")
+  const backups = DriveApp.getFilesByName('Backup.json')
 
   if (backups.hasNext()) {
     const backup = backups.next()
     backup.setContent(JSON.stringify(backupObject, null, 2))
   } else {
-    DriveApp.createFile("Backup.json", JSON.stringify(backupObject, null, 2))
+    DriveApp.createFile('Backup.json', JSON.stringify(backupObject, null, 2))
   }
 }
 
@@ -96,13 +96,13 @@ function backupImportantData() {
 function getAllOrders() {
   const spreadsheet = SpreadsheetApp.openById(deansSheetId)
 
-  const allOrders = spreadsheet.getSheetByName("All Orders")
+  const allOrders = spreadsheet.getSheetByName('All Orders')
   const ranges = allOrders
-    .getRangeList(["A2:D", "E2:F", "H2:K", "M2:M"])
+    .getRangeList(['A2:D', 'E2:F', 'H2:K', 'M2:M'])
     .getRanges()
 
-  const [details, status, progress, required] = ranges.map((range) =>
-    range.getValues().filter((row) => row.some((cell) => cell !== ""))
+  const [details, status, progress, required] = ranges.map(range =>
+    range.getValues().filter(row => row.some(cell => cell !== ''))
   )
 
   details.forEach((row, index) =>
@@ -128,11 +128,11 @@ function getAllOrders() {
  * @returns {array} An array of 'ConsumerUnitBatch' objects
  */
 function getConsumerUnits() {
-  const consumerUnits = spreadsheet.getSheetByName("Consumer Units")
+  const consumerUnits = spreadsheet.getSheetByName('Consumer Units')
   const range = consumerUnits
-    .getRange("A2:G")
+    .getRange('A2:G')
     .getValues()
-    .filter((row) => row.some((cell) => cell !== ""))
+    .filter(row => row.some(cell => cell !== ''))
 
   const batches = range.reduce((acc, cur) => {
     acc.push(new ConsumerUnitBatch(cur))
@@ -149,10 +149,10 @@ function getConsumerUnits() {
  * @returns {object} An object of 'LiveBatch' and 'ScheduleBatch' arrays
  */
 function getLiveBatches() {
-  const liveBatches = spreadsheet.getSheetByName("Live Batches")
-  const ranges = liveBatches.getRangeList(["A2:D", "E2:K", "L2:L"]).getRanges()
-  const [details, progress, required] = ranges.map((range) =>
-    range.getValues().filter((row) => row.some((cell) => cell !== ""))
+  const liveBatches = spreadsheet.getSheetByName('Live Batches')
+  const ranges = liveBatches.getRangeList(['A2:D', 'E2:K', 'L2:L']).getRanges()
+  const [details, progress, required] = ranges.map(range =>
+    range.getValues().filter(row => row.some(cell => cell !== ''))
   )
 
   details.forEach((row, index) => {
@@ -177,7 +177,7 @@ function getLiveBatches() {
  *
  */
 function makeWeeklySchedule() {
-  const weekly = spreadsheet.getSheetByName("Weekly")
+  const weekly = spreadsheet.getSheetByName('Weekly')
   const sched = new Schedule(2023, 1)
   const rangeRows = sched.getBatches().getRangeRows(7)
   const batches = sched.build()
@@ -194,15 +194,15 @@ function makeWeeklySchedule() {
 
   for (let [start, end] of rangeRows) {
     const statusRule = SpreadsheetApp.newConditionalFormatRule()
-      .whenTextContains("yes")
+      .whenTextContains('yes')
       .setRanges([weekly.getRange(`I${start}:J${end}`)])
-      .setBackground("blue")
+      .setBackground('blue')
       .build()
 
     const progressRule = SpreadsheetApp.newConditionalFormatRule()
-      .whenTextContains("yes")
+      .whenTextContains('yes')
       .setRanges([weekly.getRange(`K${start}:O${end}`)])
-      .setBackground("#38761D")
+      .setBackground('#38761D')
       .build()
 
     cfRules.push(statusRule, progressRule)
@@ -210,24 +210,24 @@ function makeWeeklySchedule() {
     weekly
       .getRange(`B${start}:B${end}`)
       .merge()
-      .setVerticalAlignment("middle")
-      .setFontWeight("bold")
+      .setVerticalAlignment('middle')
+      .setFontWeight('bold')
       .setFontSize(12)
 
     weekly
       .getRange(`P${start}:P${end}`)
       .merge()
-      .setVerticalAlignment("middle")
-      .setFontWeight("bold")
+      .setVerticalAlignment('middle')
+      .setFontWeight('bold')
       .setFontSize(12)
       .setFormula(`=SUM(F${start}:F${end})`)
 
     weekly
       .getRange(`B${start}:P${end}`)
-      .setFontFamily("Roboto")
+      .setFontFamily('Roboto')
       .setBorder(
         ...Array(6).fill(true),
-        "black",
+        'black',
         SpreadsheetApp.BorderStyle.DOTTED
       )
 
@@ -237,13 +237,13 @@ function makeWeeklySchedule() {
         `F${start}:F${end}`,
         `I${start}:P${end}`,
       ])
-      .setHorizontalAlignment("center")
+      .setHorizontalAlignment('center')
 
     weekly
       .getRangeList([`E${start}:E${end}`, `G${start}:H${end}`])
-      .setHorizontalAlignment("left")
+      .setHorizontalAlignment('left')
 
-    weekly.getRange(`I${start}:O${end}`).insertCheckboxes("yes", "no")
+    weekly.getRange(`I${start}:O${end}`).insertCheckboxes('yes', 'no')
   }
 
   weekly.setConditionalFormatRules(cfRules)
@@ -255,7 +255,7 @@ function makeWeeklySchedule() {
  */
 function updateConsumerUnits() {
   const startTime = new Date()
-  const consumerUnitsSheet = spreadsheet.getSheetByName("Consumer Units")
+  const consumerUnitsSheet = spreadsheet.getSheetByName('Consumer Units')
   let currentMaxSerial = consumerUnitsSheet
     .getRange(
       consumerUnitsSheet.getLastRow(),
@@ -274,13 +274,13 @@ function updateConsumerUnits() {
   consumerUnits.sort((a, b) => a.batch.localeCompare(b.batch))
 
   // Create an array of batch numbers from Consumer Units to use to search for existing batches
-  const consumerUnitBatchCheck = consumerUnits.map((batch) => batch.batch)
+  const consumerUnitBatchCheck = consumerUnits.map(batch => batch.batch)
 
   // Create an array to hold new Consumer Unit Batches
   const newConsumerUnitBatches = []
 
   // Loop through All Orders and determine wheather batch exists in Consumer Units
-  allOrders.forEach((batch) => {
+  allOrders.forEach(batch => {
     const index = Utils.search(
       consumerUnitBatchCheck,
       batch.batch,
@@ -313,7 +313,7 @@ function updateConsumerUnits() {
 
   spreadsheet.toast(
     `Updated Consumer Units in ${totalTime}ms`,
-    "Update Consumer Units",
+    'Update Consumer Units',
     10
   )
 }
@@ -324,7 +324,7 @@ function updateConsumerUnits() {
  */
 function updateLiveBatches() {
   const startTime = new Date()
-  const liveBatchesSheet = spreadsheet.getSheetByName("Live Batches")
+  const liveBatchesSheet = spreadsheet.getSheetByName('Live Batches')
 
   // Backup important data
   backupImportantData()
@@ -337,13 +337,13 @@ function updateLiveBatches() {
   liveBatches.sort((a, b) => a.batch.localeCompare(b.batch))
 
   // Create an array of batch numbers from Live Batches to use to search for existing batches
-  const liveBatchesCheck = liveBatches.map((batch) => batch.batch)
+  const liveBatchesCheck = liveBatches.map(batch => batch.batch)
 
   // Create new array to hold updated Live Batches
   const newLiveBatches = []
 
   // Loop through All Orders and determine wheather batch exists in Live Batches
-  allOrders.forEach((batch) => {
+  allOrders.forEach(batch => {
     const index = Utils.search(
       liveBatchesCheck,
       batch.batch,
@@ -372,7 +372,7 @@ function updateLiveBatches() {
 
   spreadsheet.toast(
     `Updated Live Batches in ${totalTime}ms`,
-    "Update Live Batches",
+    'Update Live Batches',
     10
   )
 }

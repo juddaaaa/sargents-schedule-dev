@@ -1,7 +1,7 @@
 class ConsumerUnitBatch extends Batch {
   constructor(array) {
     super([...array.slice(0, 4), new Date()])
-    this.model = array[4] || ""
+    this.model = array[4] || ''
     this.serialMin = array[5] || 0
     this.serialMax = array[6] || 0
   }
@@ -12,7 +12,7 @@ class ConsumerUnitBatch extends Batch {
    * @memberof ConsumerUnitBatch
    */
   append() {
-    const sheet = spreadsheet.getSheetByName("Consumer Units")
+    const sheet = spreadsheet.getSheetByName('Consumer Units')
 
     if (!this.exists()) {
       this.getNextSerials()
@@ -38,7 +38,7 @@ class ConsumerUnitBatch extends Batch {
    * @memberof ConsumerUnitBatch
    */
   exists() {
-    const sheet = spreadsheet.getSheetByName("Consumer Units")
+    const sheet = spreadsheet.getSheetByName('Consumer Units')
 
     if (sheet.createTextFinder(this.batch).findNext()) return true
 
@@ -52,7 +52,7 @@ class ConsumerUnitBatch extends Batch {
    */
   getNextSerials(currentMax) {
     if (!currentMax) {
-      const sheet = spreadsheet.getSheetByName("Consumer Units")
+      const sheet = spreadsheet.getSheetByName('Consumer Units')
       const currentMax = sheet
         .getRange(sheet.getLastRow(), sheet.getLastColumn())
         .getValue()

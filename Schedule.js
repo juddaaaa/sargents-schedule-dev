@@ -15,7 +15,7 @@ class Schedule {
     const result = []
 
     for (let property in this) {
-      if (!["ranges", "seperation", "year"].includes(property)) {
+      if (!['ranges', 'seperation', 'year'].includes(property)) {
         const week = this[property]
         const arrayLength = week[0].length
 
@@ -60,90 +60,90 @@ class Schedule {
 
     sheet.setHiddenGridlines(true).setFrozenRows(6)
 
-    sheet.getRange("B5:P6").setFontFamily("Roboto")
+    sheet.getRange('B5:P6').setFontFamily('Roboto')
 
     sheet
-      .getRange("B2:P2")
+      .getRange('B2:P2')
       .merge()
       .setFontSize(40)
-      .setHorizontalAlignment("right")
-      .setValue("Statics 1st Fix")
+      .setHorizontalAlignment('right')
+      .setValue('Statics 1st Fix')
 
     sheet
-      .getRange("B3:P3")
+      .getRange('B3:P3')
       .merge()
       .setFontSize(40)
-      .setHorizontalAlignment("right")
+      .setHorizontalAlignment('right')
       .setValue(`${name} Schedule`)
 
     sheet
-      .getRange("B5:P5")
-      .setBackground("#674EA7")
+      .getRange('B5:P5')
+      .setBackground('#674EA7')
       .setBorder(...Array(6).fill(true))
-      .setFontColor("white")
+      .setFontColor('white')
       .setFontSize(14)
-      .setFontWeight("bold")
-      .setHorizontalAlignment("center")
+      .setFontWeight('bold')
+      .setHorizontalAlignment('center')
 
-    sheet.getRange("C5:F5").merge().setValue("Batch Details")
+    sheet.getRange('C5:F5').merge().setValue('Batch Details')
 
-    sheet.getRange("G5:H5").merge().setValue("Required By")
+    sheet.getRange('G5:H5').merge().setValue('Required By')
 
-    sheet.getRange("I5:J5").merge().setBackground("blue").setValue("Status")
+    sheet.getRange('I5:J5').merge().setBackground('blue').setValue('Status')
 
     sheet
-      .getRange("K5:O5")
+      .getRange('K5:O5')
       .merge()
-      .setBackground("#38761D")
-      .setValue("Progress")
+      .setBackground('#38761D')
+      .setValue('Progress')
 
     sheet
-      .getRange("B6:P6")
-      .setBackground("#B4A7D6")
+      .getRange('B6:P6')
+      .setBackground('#B4A7D6')
       .setBorder(...Array(6).fill(true))
-      .setFontColor("#434343")
+      .setFontColor('#434343')
       .setFontSize(9)
-      .setFontWeight("bold")
+      .setFontWeight('bold')
       .setValues([
         [
-          "Week",
-          "Batch",
-          "Group",
-          "Description",
-          "Qty",
-          "Dispatch",
-          "Swift",
-          "Launched",
-          "Received",
-          "Cut",
-          "Built",
-          "Terminated",
-          "Tested",
-          "Packed",
-          "Vans",
+          'Week',
+          'Batch',
+          'Group',
+          'Description',
+          'Qty',
+          'Dispatch',
+          'Swift',
+          'Launched',
+          'Received',
+          'Cut',
+          'Built',
+          'Terminated',
+          'Tested',
+          'Packed',
+          'Vans',
         ],
       ])
 
-    sheet.getRange(`B6:P${sheet.getMaxRows()}`).setHorizontalAlignment("center")
+    sheet.getRange(`B6:P${sheet.getMaxRows()}`).setHorizontalAlignment('center')
 
     sheet
       .getRange(`E6:E${sheet.getMaxRows()}`)
-      .setHorizontalAlignment("left")
-      .setNumberFormat("   @")
+      .setHorizontalAlignment('left')
+      .setNumberFormat('   @')
 
     sheet
-      .getRange("G6:H6")
-      .setHorizontalAlignment("left")
-      .setNumberFormat("   @")
+      .getRange('G6:H6')
+      .setHorizontalAlignment('left')
+      .setNumberFormat('   @')
 
     sheet
       .getRange(`G7:H${sheet.getMaxRows()}`)
-      .setHorizontalAlignment("left")
-      .setNumberFormat("   dddd, dd mmmm yyyy")
+      .setHorizontalAlignment('left')
+      .setNumberFormat('   dddd, dd mmmm yyyy')
 
-    sheet.getRange("I6:J6").setBackground("#9FC5E8")
+    sheet.getRange('I6:J6').setBackground('#9FC5E8')
 
-    sheet.getRange("K6:O6").setBackground("#B6D7A8")
+    sheet.getRange('K6:O6').setBackground('#B6D7A8')
 
     return sheet
   }
@@ -158,7 +158,7 @@ class Schedule {
   getBatches() {
     const { scheduleBatches } = getLiveBatches()
 
-    scheduleBatches.forEach((batch) => {
+    scheduleBatches.forEach(batch => {
       const year = batch.getYear()
       const week = batch.getWeekNumber()
 
@@ -182,7 +182,7 @@ class Schedule {
     const ranges = []
 
     for (let property in this) {
-      if (!["ranges", "seperation", "year"].includes(property)) {
+      if (!['ranges', 'seperation', 'year'].includes(property)) {
         const week = this[property]
 
         ranges.push([startRow, startRow + week.length - 1])

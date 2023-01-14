@@ -64,7 +64,7 @@ class ScheduleBatch extends LiveBatch {
       this.tested,
       this.packed,
     ])
-    
+
     return array
   }
 }
