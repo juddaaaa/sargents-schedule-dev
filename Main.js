@@ -8,9 +8,7 @@ function addNewLiveBatches() {
     const liveBatchData = liveBatches.getDataRange().getValues().slice(1)
     const completedBatches = spreadsheet.getSheetByName('Completed Batches')
     const completedBatchData = completedBatches.getDataRange().getValues().slice(1)
-
     const checkBatches = [...liveBatchData, ...completedBatchData].map(batch => batch[0]).sort()
-
     const { liveBatches: allOrders } = getAllOrders()
 
     backupImportantData()
@@ -43,11 +41,8 @@ function addNewLiveBatches() {
  */
 function backupImportantData() {
     const liveBatches = spreadsheet.getSheetByName('Live Batches').getDataRange().getValues()
-
     const completedBatches = spreadsheet.getSheetByName('Completed Batches').getDataRange().getValues()
-
     const consumerUnits = spreadsheet.getSheetByName('Consumer Units').getDataRange().getValues()
-
     const backupObject = {
         'Live Batches': liveBatches,
         'Completed Batches': completedBatches,
@@ -72,10 +67,8 @@ function backupImportantData() {
  */
 function getAllOrders() {
     const spreadsheet = SpreadsheetApp.openById(deansSheetId)
-
     const allOrders = spreadsheet.getSheetByName('All Orders')
     const ranges = allOrders.getRangeList(['A2:D', 'E2:F', 'H2:K', 'M2:M']).getRanges()
-
     const [details, status, progress, required] = ranges.map(range =>
         range.getValues().filter(row => row.some(cell => cell !== ''))
     )
