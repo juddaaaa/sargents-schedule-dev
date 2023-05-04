@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  </head>
+  <body>
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s5">
+            <input id="batch" type="text" placeholder="Batch Number" onchange="findBatch()" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s5">
+            <input id="model" type="text" class="validate" placeholder="Model" />
+          </div>
+          <div class="input-field col s5">
+            <input id="qty" type="text" class="validate" placeholder="Qty" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s5">
+            <input id="dimensions" type="text" class="validate" placeholder="Dimensions" />
+          </div>
+          <div class="input-field col s5">
+            <input id="beds" type="text" class="validate" placeholder="Bedrooms" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s10">
+            <input id="cu_model" type="text" list="cu_models" placeholder="Consumer Unit Model(s)" onchange="toggleUpdate()" />
+            <datalist id="cu_models" class="browser-default"></datalist>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s5">
+            <input id="cu_serial_min" type="text" class="validate" placeholder="Serial from" />
+          </div>
+          <div class="input-field col s5">
+            <input id="cu_serial_max" type="text" class="validate" placeholder="Serial to" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <button id="update" type="button" disabled onclick="updateConsumerUnit()">Update</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const cu_models = document.querySelector('#cu_models')
+
+        google.script.run
+          .withSuccessHandler(response => {
+            response.forEach(model => {
+              const option = document.createElement('option')
+              const text = document.createTextNode(model)
+
+              option.value = model
+              option.append(text)
+
+              cu_models.append(option)
+            })
+          })
+          .withFailureHandler(error => console.error(error))
+          .getModels()
+      })
+
+      function findBatch() {
+        google.script.run
+          .withSuccessHandler(response => {
+            const batch = document.querySelector('#batch')
+            const model = document.querySelector('#model')
+            const qty = document.querySelector('#qty')
+            const dimensions = document.querySelector('#dimensions')
+            const beds = document.querySelector('#beds')
+            const cu_model = document.querySelector('#cu_model')
+            const cu_models = document.querySelector('#cu_models')
+            const cuSerialMin = document.querySelector('#cu_serial_min')
+            const cuSerialMax = document.querySelector('#cu_serial_max')
+            const update = document.querySelector('#update')
+
+            const match = response.find(object => object.batch === batch.value.toUpperCase())
+
+            if (match) {
+              batch.value = match.batch
+              model.value = match.model
+              qty.value = `${match.qty} units`
+              dimensions.value = `${match.length}ft x ${match.width}ft`
+              beds.value = `${match.bedrooms} bedrooms`
+              cuSerialMin.value = match.cuSerialMin
+              cuSerialMax.value = match.cuSerialMax
+
+              if (match.cuModel) {
+                cu_model.value = match.cuModel
+              } else {
+                cu_model.value = ''
+                cu_model.focus()
+              }
+            }
+          })
+          .withFailureHandler(error => console.error(error))
+          .getConsumerUnits()
+      }
+
+      function toggleUpdate() {
+        const cu_model = document.querySelector('#cu_model')
+        const update = document.querySelector('#update')
+
+        update.disabled = cu_model.value === ''
+      }
+
+      function updateConsumerUnit() {
+        const batch = document.querySelector('#batch')
+        const cu_model = document.querySelector('#cu_model')
+
+        google.script.run
+          .withSuccessHandler(response => {
+            console.log(response)
+          })
+          .withFailureHandler(error => console.log(error))
+          .updateConsumerUnit(batch.value, cu_model.value)
+      }
+    </script>
+  </body>
+</html>
